@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mestre da Adivinhação</title>
+    <meta name="description" content="O melhor jogo de adivinhação de números. Desafie sua mente!">
+    <meta name="theme-color" content="#0f172a">
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;500;700&display=swap" rel="stylesheet">
+    <style>
+        /* Fallback básico para garantir leitura antes do CSS carregar */
+        body {
+            background-color: #0f172a;
+            color: white;
+            font-family: sans-serif;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="app-container">
+        <!-- View: Introdução -->
+        <section id="view-intro" class="view active">
+            <div class="glass-card fade-in">
+                <div class="icon-wrapper">
+                    <span class="material-icon">🎮</span>
+                </div>
+                <h1>Mestre da Adivinhação</h1>
+                <p class="subtitle">Desafie seus limites</p>
+
+                <div class="input-group">
+                    <label for="player-name">Quem é você?</label>
+                    <input type="text" id="player-name" placeholder="Seu apelido..." autocomplete="off">
+                </div>
+
+                <button id="btn-start" class="btn-primary">Entrar no Jogo</button>
+            </div>
+        </section>
+
+        <!-- View: Menu Principal -->
+        <section id="view-menu" class="view hidden">
+            <header class="user-header">
+                <div class="avatar-circle" id="menu-avatar">J</div>
+                <div class="user-info">
+                    <h2 id="menu-player-name">Jogador</h2>
+                    <p class="stats">Nível <span id="menu-level">1</span> • <span id="menu-score">0</span> pts</p>
+                </div>
+            </header>
+
+            <nav class="menu-grid">
+                <button id="btn-mode-progressive" class="card-btn ripple">
+                    <div class="btn-content">
+                        <span class="btn-icon">🚀</span>
+                        <div class="btn-text">
+                            <h3>Modo Progressivo</h3>
+                            <p>Suba de nível infinitamente</p>
+                        </div>
+                    </div>
+                </button>
+
+                <button id="btn-mode-custom" class="card-btn ripple">
+                    <div class="btn-content">
+                        <span class="btn-icon">🛠️</span>
+                        <div class="btn-text">
+                            <h3>Treino Livre</h3>
+                            <p>Configure do seu jeito</p>
+                        </div>
+                    </div>
+                </button>
+
+                <button id="btn-view-ranking" class="card-btn ripple outline">
+                    <div class="btn-content">
+                        <span class="btn-icon">🏆</span>
+                        <div class="btn-text">
+                            <h3>Ranking Global</h3>
+                            <p>Veja os melhores</p>
+                        </div>
+                    </div>
+                </button>
+            </nav>
+
+            <button id="btn-logout" class="btn-text">Sair / Trocar Conta</button>
+        </section>
+
+        <!-- View: Customização -->
+        <section id="view-custom" class="view hidden">
+            <div class="glass-card">
+                <h2>Configurar Treino</h2>
+
+                <div class="input-group">
+                    <label for="input-custom-max">Número Máximo (0 a ...)</label>
+                    <input type="number" id="input-custom-max" placeholder="Ex: 1000" value="1000" min="10">
+                </div>
+
+                <div class="input-group">
+                    <label for="input-custom-attempts">Número de Tentativas</label>
+                    <input type="number" id="input-custom-attempts" placeholder="Ex: 10" value="10" min="1">
+                </div>
+
+                <div class="actions">
+                    <button id="btn-start-custom" class="btn-primary">JOGAR AGORA</button>
+                    <button id="btn-back-custom" class="btn-secondary">Voltar</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- View: Jogo -->
+        <section id="view-game" class="view hidden">
+            <header class="game-header">
+                <button id="btn-quit-game" class="btn-icon">✕</button>
+                <div class="game-info">
+                    <span id="game-mode-tag" class="tag">Nível 1</span>
+                </div>
+                <div class="score-display">
+                    <span id="game-score">0</span> pts
+                </div>
+            </header>
+
+            <main class="game-board">
+                <div class="progress-container">
+                    <div class="progress-bar" id="attempts-bar"></div>
+                </div>
+                <p class="attempts-text">Restam <span id="game-attempts">0</span> tentativas</p>
+
+                <div class="feedback-area">
+                    <h2 id="feedback-main">Adivinhe!</h2>
+                    <p id="feedback-sub">Entre <span id="limit-min">0</span> e <span id="limit-max">100</span></p>
+                </div>
+
+                <div class="input-area">
+                    <input type="number" id="input-guess" placeholder="?" pattern="\d*" inputmode="numeric">
+                    <button id="btn-guess" class="btn-action">CHUTAR</button>
+                </div>
+
+                <div id="game-actions" class="hidden fade-in-up">
+                    <button id="btn-next-level" class="btn-primary pulse">Próximo Nível</button>
+                </div>
+            </main>
+
+            <footer class="history-panel">
+                <h3>Histórico</h3>
+                <div id="guess-history" class="history-list">
+                    <!-- Itens inseridos via JS -->
+                </div>
+            </footer>
+        </section>
+
+        <!-- View: Ranking -->
+        <section id="view-ranking" class="view hidden">
+            <div class="glass-card full-height">
+                <h2>🏆 Hall da Fama</h2>
+                <div id="ranking-list" class="ranking-list">
+                    <!-- Items -->
+                </div>
+                <button id="btn-back-ranking" class="btn-secondary">Voltar</button>
+            </div>
+        </section>
+
+    </div>
+    <script src="main.js" type="module"></script>
+</body>
+
+</html>
